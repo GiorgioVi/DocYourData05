@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 We used (https://mtgjson.com/json/PD2.json) for our data. It's a list of
 every card in the 2010 Fire and Lightning Series of Magic The Gathering.
