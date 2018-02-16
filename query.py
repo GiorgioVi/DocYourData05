@@ -18,54 +18,68 @@ Every card has the following fields:
   artist                    The name of the artist who drew this card.
   power                     The offense. This is a number in a string.
   toughness                 The defense. This is a number in a string.
+The data was put into the 'deck' collection of the its2010again' database
+of the 'homer.stuy.edu' server. It is contained in PD2.json in this repo,
+and was parsed by create.py which loaded the json and inserted it into db
 """
 
 import pymongo
 
-
+#Given a query document, returns a cursor object containing the results of the search on the deck collection
 def query(document):
     connection = pymongo.MongoClient("homer.stuy.edu")
     db = connection["its2010again"]
     collection = db["deck"]
     return collection.find(document)
 
+#Given a mongo cursor object, returns a python list of dictionaries
 def cursorToList(c):
     l = []
     for e in c:
         l.append(e)
     return l
 
+#Given a MTG card id, will return the one card with this id or None
 def get_by_id(id):
     result = query({"id": id})
     for card in result:
         return card
 
+#Given a string name, will return the one card with this name or None
 def get_by_name(name):
     result = query({"name": name})
     for card in result:
         return card
 
+#Given a color name like Red, Green, Blue, White or Black, will return a list of cards that have this color in their mana cost
 def get_cards_with_color(c):
     return cursorToList(query({"colors": c}))
 
+#Given two numbers, will return a list of cards with a converted mana cost between the two numbers, inclusive
 def get_mana_range(minCMC, maxCMC):
     return cursorToList(query({"cmc": {"$lte": int(maxCMC), "$gte": int(minCMC)}}))
 
+#Given an artist name, returns a list of cards drawn by that artist
 def get_by_artist(artist):
     return cursorToList(query({"artist": artist}))
 
+#Given a toughness/defense number, will return a list of cards >= this number
 def get_tougher_than(defense):
     return cursorToList(query({"toughness": {"$gte": str(defense)}}))
 
+#Given a power/attack number, will return a list of cards >= this number
 def get_stronger_than(attack):
     return cursorToList(query({"power": {"$gte": str(attack)}}))
 
+#Given a number mana cost and a toughness/defense, will return all cards cheaper than the cmc and tougher than this number
 def get_cheaper_tougher(cmc, defense):
     return cursorToList(query({"cmc": {"$lte": int(cmc)}, "toughness": {"$gte": str(defense)}}))
 
+#Given a number mana cost and a power/attack, will return all cards cheaper than the cmc and more powerful than this number
 def get_cheaper_stronger(cmc, attack):
     return cursorToList(query({"cmc": {"$lte": int(cmc)}, "power": {"$gte": str(attack)}}))
 
+#Returns a list of cards with both power >= attack AND toughness >= defense
 def get_min_stats(attack, defense):
     return cursorToList(query({"toughness": {"$gte": str(attack)}, "power": {"$gte": str(defense)}}))
 
