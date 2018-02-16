@@ -26,7 +26,7 @@ import pymongo
 def query(document):
     connection = pymongo.MongoClient("homer.stuy.edu")
     db = connection["its2010again"]
-    collection = db["cards"]
+    collection = db["deck"]
     return collection.find(document)
 
 def cursorToList(c):
@@ -83,6 +83,7 @@ print get_by_artist("Michael Sutfin")[:2]
 print ""
 print "get_min_stats(2, 2)"
 print len(get_min_stats(2, 2))
+print ""
 print "get_cheaper_tougher(3, 1)"
 print len(get_cheaper_tougher(3, 2))
 print ""
