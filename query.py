@@ -41,7 +41,7 @@ def get_by_id(id):
         return card
 
 def get_by_name(name):
-    result = query({""})
+    result = query({"name": name})
     for card in result:
         return card
 
