@@ -84,8 +84,8 @@ print ""
 print "get_min_stats(2, 2)"
 print len(get_min_stats(2, 2))
 print ""
-print "get_cheaper_tougher(3, 1)"
+print "get_cheaper_tougher(3, 2)"
 print len(get_cheaper_tougher(3, 2))
 print ""
-print "get_cheaper_stronger(3, 1)"
+print "get_cheaper_stronger(3, 2)"
 print len(get_cheaper_stronger(3, 2))
